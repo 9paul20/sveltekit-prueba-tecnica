@@ -1,59 +1,35 @@
-<script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+<script lang="ts">
+	import type { PageData } from './$types';
+
+	export let data: PageData;
+
+	$: ({ articles } = data);
 </script>
 
-<svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
-</svelte:head>
-
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
-
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-</section>
-
-<style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
-</style>
+<div class="grid">
+	<div>
+		<h2>Articles:</h2>
+		{#each articles as article}
+			<article>
+				<header>{article.title}</header>
+				<p>
+					{article.content}
+				</p>
+				<form action="?/deleteArticle&id={article.id}" method="POST">
+					<button type="submit" class="outline secondary">Delete Article</button>
+				</form>
+				<a href="/{article.id}" role="button" class="outline constrast" style="width: 100%;"
+					>Edit Article</a
+				>
+			</article>
+		{/each}
+	</div>
+	<form action="?/createArticle" method="POST">
+		<h3>New Article</h3>
+		<label for="title"> Title </label>
+		<input type="text" id="title" name="title" />
+		<label for="content"> Content </label>
+		<textarea id="content" name="content" rows={5} />
+		<button type="submit">Add Article</button>
+	</form>
+</div>
