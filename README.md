@@ -12,7 +12,9 @@ npm create svelte@latest
 
 # create a new project in my-app
 npm create svelte@latest my-app
-```
+
+# After setting up your project and before starting the development server, make sure to push your Prisma schema to the database
+npx prisma db push
 
 ## Developing
 
